@@ -251,6 +251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handedness: 1
   gripTestInput: 0
+  triggerTestInput: 0
 --- !u!135 &541096549
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -703,6 +704,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handedness: 0
   gripTestInput: 0
+  triggerTestInput: 0
 --- !u!135 &1728657559
 SphereCollider:
   m_ObjectHideFlags: 0

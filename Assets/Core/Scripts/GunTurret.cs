@@ -29,41 +29,14 @@ public class GunTurret : MonoBehaviour
         currentRightHandleUser = GetInputInVolume(turretHead.TransformPoint(rightHandlePos), rightHandleVolume, turretHead.rotation);
         currentLeftHandleUser = GetInputInVolume(turretHead.TransformPoint(leftHandlePos), leftHandleVolume, turretHead.rotation);
         CheckGrippage();
-
-        if (rightHandleGripped || leftHandleGripped)
-        {
-            if (!prevRightHandleGripped && !prevLeftHandleGripped)
-                startRearPos = rearPoint.position;
-            if (rightHandleGripped && !prevRightHandleGripped)
-                startRightHandlePos = grippingRightHandleUser.transform.position;
-            if (leftHandleGripped && !prevLeftHandleGripped)
-                startLeftHandlePos = grippingLeftHandleUser.transform.position;
-            Vector3 userHandlePos = startRearPos;
-            Vector3 offsetPos = Vector3.zero;
-            int average = 0;
-            if (rightHandleGripped)
-            {
-                offsetPos += grippingRightHandleUser.transform.position - startRightHandlePos;
-                average++;
-            }
-            if (leftHandleGripped)
-            {
-                offsetPos += grippingLeftHandleUser.transform.position - startLeftHandlePos;
-                average++;
-            }
-            offsetPos /= average; //No need to worry about dividing by zero since we know in here at least right hand or left hand is gripping so average will have to be at least 1
-            Vector3 aimDir = (midPoint.position - (startRearPos + offsetPos)).normalized;
-            turretHead.rotation = Quaternion.LookRotation(aimDir, transform.up);
-        }
+        RotateTurret();
+        if (rightHandleGripped && grippingRightHandleUser.isTriggering || leftHandleGripped && grippingLeftHandleUser.isTriggering)
+            ; //Shoot
     }
     void LateUpdate()
     {
         prevRightHandleGripped = rightHandleGripped;
         prevLeftHandleGripped = leftHandleGripped;
-        // startRightHandlePos = rightHandleUser.transform.position;
-        // startLeftHandlePos = leftHandleUser.transform.position;
-        // grippingRightHandleUser = currentRightHandleUser;
-        // grippingLeftHandleUser = currentLeftHandleUser;
     }
     void OnDrawGizmosSelected()
     {
@@ -90,6 +63,35 @@ public class GunTurret : MonoBehaviour
         else if (leftHandleGripped && !grippingLeftHandleUser.isGripping)
             leftHandleGripped = false;
     }
+    private void RotateTurret()
+    {
+        if (rightHandleGripped || leftHandleGripped)
+        {
+            if (!prevRightHandleGripped && !prevLeftHandleGripped)
+                startRearPos = rearPoint.position;
+            if (rightHandleGripped && !prevRightHandleGripped)
+                startRightHandlePos = grippingRightHandleUser.transform.position;
+            if (leftHandleGripped && !prevLeftHandleGripped)
+                startLeftHandlePos = grippingLeftHandleUser.transform.position;
+            Vector3 userHandlePos = startRearPos;
+            Vector3 offsetPos = Vector3.zero;
+            int average = 0;
+            if (rightHandleGripped)
+            {
+                offsetPos += grippingRightHandleUser.transform.position - startRightHandlePos;
+                average++;
+            }
+            if (leftHandleGripped)
+            {
+                offsetPos += grippingLeftHandleUser.transform.position - startLeftHandlePos;
+                average++;
+            }
+            offsetPos /= average; //No need to worry about dividing by zero since we know in here at least right hand or left hand is gripping so average will have to be at least 1
+            Vector3 aimDir = (midPoint.position - (startRearPos + offsetPos)).normalized;
+            turretHead.rotation = Quaternion.LookRotation(aimDir, transform.up);
+        }
+    }
+
     private static ControllerInput GetInputInVolume(Vector3 pos, Vector3 size, Quaternion rot)
     {
         RaycastHit[] objsInRightHandle = Physics.BoxCastAll(pos, size / 2, Vector3.forward, rot, float.Epsilon, ~0, QueryTriggerInteraction.Collide);

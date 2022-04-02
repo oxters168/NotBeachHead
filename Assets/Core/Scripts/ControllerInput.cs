@@ -10,8 +10,10 @@ public class ControllerInput : MonoBehaviour
     private bool deviceFound;
 
     public bool gripTestInput;
+    public bool triggerTestInput;
 
     public bool isGripping { get; private set; }
+    public bool isTriggering { get; private set; }
 
     void Start()
     {
@@ -21,13 +23,19 @@ public class ControllerInput : MonoBehaviour
     void Update()
     {
         isGripping = false;
+        isTriggering = false;
         if (deviceFound)
         {
             bool gripValue;
             currentDevice.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out gripValue);
             isGripping = gripValue;
+
+            bool triggerValue;
+            currentDevice.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out triggerValue);
+            isTriggering = triggerValue;
         }
         isGripping |= gripTestInput;
+        isTriggering |= triggerTestInput;
     }
 
     private void InitController()
