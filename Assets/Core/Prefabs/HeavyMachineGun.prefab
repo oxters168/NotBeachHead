@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 8264078145213034762}
   m_Layer: 0
   m_Name: HeavyMachineGun
-  m_TagString: Untagged
+  m_TagString: EnemyTarget
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,6 +147,11 @@ MonoBehaviour:
   leftHandlePos: {x: -0.062, y: 0.06, z: -0.615}
   rightHandleVolume: {x: 0.06, y: 0.16, z: 0.06}
   leftHandleVolume: {x: 0.06, y: 0.16, z: 0.06}
+  maxShotDistance: 100
+  maxAngleError: 5
+  secondsPerShot: 0.1
+  shootLinePrefab: {fileID: 1190000591947668243, guid: 70e1dbbf11e5efb469a100c546d548bc,
+    type: 3}
 --- !u!1 &6528601681540653414
 GameObject:
   m_ObjectHideFlags: 0

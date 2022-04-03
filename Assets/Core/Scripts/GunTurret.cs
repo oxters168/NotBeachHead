@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityHelpers;
 
 public class GunTurret : MonoBehaviour
 {
@@ -10,6 +11,12 @@ public class GunTurret : MonoBehaviour
     public Vector3 leftHandlePos;
     public Vector3 rightHandleVolume;
     public Vector3 leftHandleVolume;
+
+    [Space(10)]
+    public float maxShotDistance = 100;
+    public float maxAngleError = 5;
+    public float secondsPerShot = 0.1f;
+    private float prevShotTime = float.MinValue;
 
     private ControllerInput currentRightHandleUser;
     private bool rightHandleGripped;
@@ -24,6 +31,13 @@ public class GunTurret : MonoBehaviour
 
     private Vector3 startRearPos;
 
+    public LineRenderer shootLinePrefab;
+    private ObjectPool<LineRenderer> shootLines;
+
+    void Start()
+    {
+        shootLines = new ObjectPool<LineRenderer>(shootLinePrefab, 10, true, false, transform);
+    }
     void Update()
     {
         currentRightHandleUser = GetInputInVolume(turretHead.TransformPoint(rightHandlePos), rightHandleVolume, turretHead.rotation);
@@ -31,7 +45,30 @@ public class GunTurret : MonoBehaviour
         CheckGrippage();
         RotateTurret();
         if (rightHandleGripped && grippingRightHandleUser.isTriggering || leftHandleGripped && grippingLeftHandleUser.isTriggering)
-            ; //Shoot
+        {
+            if (Time.time - prevShotTime >= secondsPerShot)
+            {
+                prevShotTime = Time.time;
+
+                Vector3 barrelDir = (frontPoint.position - rearPoint.position).normalized;
+                var randRotError = Quaternion.AngleAxis(Random.value * maxAngleError, Random.insideUnitSphere.normalized);
+                // shootDir = randRotError * shootDir;
+
+                Ray shootRay = new Ray(frontPoint.position, randRotError * barrelDir);
+                //Shoot
+                shootLines.Get(shootLine =>
+                {
+                    shootLine.SetPositions(new Vector3[] { shootRay.origin, shootRay.origin + shootRay.direction * maxShotDistance });
+                });
+
+                RaycastHit[] hits = Physics.RaycastAll(shootRay.origin, shootRay.direction, maxShotDistance, ~(1 << LayerMask.NameToLayer("Environment")), QueryTriggerInteraction.Collide);
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    hits[i].transform.root.GetComponentInChildren<Enemy>().Hit();
+                    // Debug.Log(hits[i].transform.root.name);
+                }
+            }
+        }
     }
     void LateUpdate()
     {
