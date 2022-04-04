@@ -5,6 +5,7 @@ public class EnemyGenerator : MonoBehaviour
 {
     public Enemy enemyPrefab;
     public float secondsPerSpawn = 1;
+    public int maxEnemies = 5;
     public Vector3 randomSpawnVolume = Vector3.zero;
 
     private ObjectPool<Enemy> enemiesPool;
@@ -20,20 +21,26 @@ public class EnemyGenerator : MonoBehaviour
         {
             prevSpawnTime = Time.time;
 
-            enemiesPool.Get(enemy =>
+            if (enemiesPool.activeCount < maxEnemies)
             {
-                enemy.SetOrigin(this);
-                Vector3 spawnExtents = randomSpawnVolume / 2;
-                Vector3 posOffset = new Vector3(Random.Range(-1f, 1f) * spawnExtents.x, Random.Range(-1f, 1f) * spawnExtents.y, Random.Range(-1f, 1f) * spawnExtents.z);
-                enemy.transform.position = transform.position + posOffset;
-                enemy.transform.rotation = transform.rotation;
-            });
+                enemiesPool.Get(enemy =>
+                {
+                    enemy.SetOrigin(this);
+                    Vector3 spawnExtents = randomSpawnVolume / 2;
+                    Vector3 posOffset = new Vector3(Random.Range(-1f, 1f) * spawnExtents.x, Random.Range(-1f, 1f) * spawnExtents.y, Random.Range(-1f, 1f) * spawnExtents.z);
+                    enemy.transform.position = transform.position + posOffset;
+                    enemy.transform.rotation = transform.rotation;
+                });
+            }
         }
     }
     void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(transform.position, randomSpawnVolume);
+        if (Mathf.Approximately(randomSpawnVolume.x, 0) && Mathf.Approximately(randomSpawnVolume.y, 0) && Mathf.Approximately(randomSpawnVolume.z, 0))
+            Gizmos.DrawSphere(transform.position, 0.06f);
+        else
+            Gizmos.DrawWireCube(transform.position, randomSpawnVolume);
     }
 
     public void Return(Enemy child)

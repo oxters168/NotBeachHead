@@ -17,7 +17,7 @@ public class Gunshot : MonoBehaviour
         var shootLine = GetComponentInChildren<LineRenderer>();
         shootLine.SetPositions(new Vector3[] { shootRay.origin, shootRay.origin + shootRay.direction * maxShotDistance });
 
-        RaycastHit[] hits = Physics.RaycastAll(shootRay.origin, shootRay.direction, maxShotDistance, ~(1 << LayerMask.NameToLayer("Environment")) & ~(1 << LayerMask.NameToLayer("Obstacle")), QueryTriggerInteraction.Collide);
+        RaycastHit[] hits = Physics.RaycastAll(shootRay.origin, shootRay.direction, maxShotDistance, ~(1 << LayerMask.NameToLayer("Ground")) & ~(1 << LayerMask.NameToLayer("Obstacle")), QueryTriggerInteraction.Collide);
         for (int i = 0; i < hits.Length; i++)
         {
             hits[i].transform.root.GetComponentInChildren<Enemy>().Hit();

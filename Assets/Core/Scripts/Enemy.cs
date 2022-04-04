@@ -42,7 +42,8 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void OnPathCalculated(Pathfinding.Path p) {
+    public void OnPathCalculated(Pathfinding.Path p)
+    {
         if (!p.error)
         {
             waypointIndex = 0;
@@ -59,7 +60,6 @@ public class Enemy : MonoBehaviour
         GameObject closestTarget = null;
         for (int i = 0; i < targets.Length; i++)
         {
-            //Change to A* distance eventually
             float currentSqrMag = Vector3.SqrMagnitude(targets[i].transform.position - transform.position);
             if (currentSqrMag < minSqrMag)
             {
