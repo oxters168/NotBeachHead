@@ -61,3 +61,9 @@ crashlytics-build.properties
 # Imported
 Assets/PolygonWar/*
 !Assets/PolygonWar/.gitkeep
+
+Assets/AstarPathfindingProject/*
+!Assets/AstarPathfindingProject/.gitkeep
+
+Assets/FastNoise Unity/*
+!Assets/FastNoise Unity/.gitkeep

@@ -148,9 +148,9 @@ MonoBehaviour:
   rightHandleVolume: {x: 0.06, y: 0.16, z: 0.06}
   leftHandleVolume: {x: 0.06, y: 0.16, z: 0.06}
   maxShotDistance: 100
-  maxAngleError: 5
+  maxAngleError: 2
   secondsPerShot: 0.1
-  shootLinePrefab: {fileID: 1190000591947668243, guid: 70e1dbbf11e5efb469a100c546d548bc,
+  gunshotPrefab: {fileID: 948578278525686539, guid: 70e1dbbf11e5efb469a100c546d548bc,
     type: 3}
 --- !u!1 &6528601681540653414
 GameObject:

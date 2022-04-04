@@ -31,12 +31,12 @@ public class GunTurret : MonoBehaviour
 
     private Vector3 startRearPos;
 
-    public LineRenderer shootLinePrefab;
-    private ObjectPool<LineRenderer> shootLines;
+    public Gunshot gunshotPrefab;
+    private ObjectPool<Gunshot> gunshots;
 
     void Start()
     {
-        shootLines = new ObjectPool<LineRenderer>(shootLinePrefab, 10, true, false, transform);
+        gunshots = new ObjectPool<Gunshot>(gunshotPrefab, 10, true, false, transform);
     }
     void Update()
     {
@@ -56,17 +56,12 @@ public class GunTurret : MonoBehaviour
 
                 Ray shootRay = new Ray(frontPoint.position, randRotError * barrelDir);
                 //Shoot
-                shootLines.Get(shootLine =>
+                gunshots.Get(gunshot =>
                 {
-                    shootLine.SetPositions(new Vector3[] { shootRay.origin, shootRay.origin + shootRay.direction * maxShotDistance });
+                    gunshot.origin = gunshots;
+                    gunshot.shootRay = shootRay;
+                    gunshot.maxShotDistance = maxShotDistance;
                 });
-
-                RaycastHit[] hits = Physics.RaycastAll(shootRay.origin, shootRay.direction, maxShotDistance, ~(1 << LayerMask.NameToLayer("Environment")), QueryTriggerInteraction.Collide);
-                for (int i = 0; i < hits.Length; i++)
-                {
-                    hits[i].transform.root.GetComponentInChildren<Enemy>().Hit();
-                    // Debug.Log(hits[i].transform.root.name);
-                }
             }
         }
     }

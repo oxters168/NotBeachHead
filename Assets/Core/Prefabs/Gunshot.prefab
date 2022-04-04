@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3421124297769514782}
+  - component: {fileID: 948578278525686539}
   - component: {fileID: 1190000591947668243}
   m_Layer: 0
-  m_Name: ShootLine
+  m_Name: Gunshot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,6 +32,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &948578278525686539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5769314076171945927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac34a39980223da41b20dd78ab17a65f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxShotDistance: 0
+  ttl: 0.1
 --- !u!120 &1190000591947668243
 LineRenderer:
   m_ObjectHideFlags: 0
